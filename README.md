@@ -1,8 +1,5 @@
 # Generator
-Генератор мира для PocketMine-MP.
+A generator for ***PocketMine-MP***. Screenshots can be viewed [here](https://github.com/Lind0f/Generator/tree/master/screenshots).
 
-## Как установить?
-1. Загрузить последний релиз из https://github.com/Lind0f/Generator/releases в папку plugins.
-2. В файле server.properties изменить параметр level-type на normale.
-3. Удалить уже созданный мир.
-4. Запустить сервер и радоваться новой генерации.
+## How to setup?
+Download and install the latest compiled [release](https://github.com/Lind0f/Generator/releases). Set the **level-type** to **normale** in *server.properties*.

@@ -1,6 +1,6 @@
 name: Generator
 version: 1.0.3
 main: generator\Generator
-api: 3.0.0
+api: 3.7.0
 load: STARTUP
 author: Lind0f
