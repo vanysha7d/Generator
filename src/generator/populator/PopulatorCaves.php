@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace generator\populator;
 
 use generator\biome\CaveBiome;
-use generator\utils\JavaRandom;
+use generator\utils\JRandom;
 use pocketmine\block\Block;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
@@ -17,7 +17,7 @@ class PopulatorCaves extends Populator{
 
 	protected $checkAreaSize = 8;
 
-	/** @var JavaRandom */
+	/** @var JRandom */
 	private $random;
 
 	/** @var int */
@@ -53,7 +53,7 @@ class PopulatorCaves extends Populator{
 	 * @param Random       $random
 	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
-		$this->random = new JavaRandom;
+		$this->random = new JRandom;
 		$this->random->setSeed($level->getSeed());
 		$worldLong1 = $this->random->nextLong();
 		$worldLong2 = $this->random->nextLong();
@@ -104,7 +104,7 @@ class PopulatorCaves extends Populator{
 		$f1 = 0.0;
 		$f2 = 0.0;
 
-		$localRandom = new JavaRandom($seed);
+		$localRandom = new JRandom($seed);
 
 		if($maxAngle <= 0){
 			$checkAreaSize = $this->checkAreaSize * 16 - 16;
@@ -303,12 +303,12 @@ class PopulatorCaves extends Populator{
 	}
 
 	/**
-	 * @param JavaRandom $random
+	 * @param JRandom $random
 	 * @param int        $min
 	 * @param int        $max
 	 * @return int
 	 */
-	public static function numberInRange(JavaRandom $random, int $min, int $max) : int{
+	public static function numberInRange(JRandom $random, int $min, int $max) : int{
 		return $min + $random->nextInt($max - $min + 1);
 	}
 }

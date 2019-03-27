@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace generator\objects\trees;
 
 use generator\object\tree\TreeGenerator;
-use generator\utils\JavaRandom;
+use generator\utils\JRandom;
 use pocketmine\block\Block;
 use pocketmine\block\Dirt;
 use pocketmine\block\Leaves2;
@@ -32,23 +32,23 @@ class AcaciaTree extends TreeGenerator{
 	 * @return bool
 	 */
 	public function generate(ChunkManager $level, Random $random, Vector3 $position) : bool{
-		$javaRandom = new JavaRandom;
-		$height = $javaRandom->nextInt(3) + $javaRandom->nextInt(3) + 5;
+		$JRandom = new JRandom;
+		$height = $JRandom->nextInt(3) + $JRandom->nextInt(3) + 5;
 		if(!$this->canPlaceOn($level, $position)){
 			return false;
 		}
-		$d = (float) ($javaRandom->nextFloat() * M_PI * 2.0);
+		$d = (float) ($JRandom->nextFloat() * M_PI * 2.0);
 		$dx = (int) (cos($d) + 1.5) - 1;
 		$dz = (int) (sin($d) + 1.5) - 1;
 		if(abs($dx) > 0 && abs($dz) > 0){
-			if($javaRandom->nextBoolean()){
+			if($JRandom->nextBoolean()){
 				$dx = 0;
 			}else{
 				$dz = 0;
 			}
 		}
-		$twistHeight = $height - 1 - $javaRandom->nextInt(4);
-		$twistCount = $javaRandom->nextInt(3) + 1;
+		$twistHeight = $height - 1 - $JRandom->nextInt(4);
+		$twistCount = $JRandom->nextInt(3) + 1;
 		$centerX = $position->getFloorX();
 		$centerZ = $position->getFloorZ();
 		$trunkTopY = 0;
@@ -80,11 +80,11 @@ class AcaciaTree extends TreeGenerator{
 			}
 		}
 
-		$d = (float) ($javaRandom->nextFloat() * M_PI * 2.0);
+		$d = (float) ($JRandom->nextFloat() * M_PI * 2.0);
 		$dxB = (int) (cos($d) + 1.5) - 1;
 		$dzB = (int) (sin($d) + 1.5) - 1;
 		if(abs($dxB) > 0 && abs($dzB) > 0){
-			if($javaRandom->nextBoolean()){
+			if($JRandom->nextBoolean()){
 				$dxB = 0;
 			}else{
 				$dzB = 0;
@@ -93,8 +93,8 @@ class AcaciaTree extends TreeGenerator{
 		if($dx != $dxB || $dz != $dzB){
 			$centerX = $position->getFloorX();
 			$centerZ = $position->getFloorZ();
-			$branchHeight = $twistHeight - 1 - $javaRandom->nextInt(2);
-			$twistCount = $javaRandom->nextInt(3) + 1;
+			$branchHeight = $twistHeight - 1 - $JRandom->nextInt(2);
+			$twistCount = $JRandom->nextInt(3) + 1;
 			$trunkTopY = 0;
 
 			for($y = $branchHeight + 1; $y < $height; $y++){

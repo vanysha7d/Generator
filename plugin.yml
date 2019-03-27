@@ -1,5 +1,5 @@
 name: Generator
-version: 1.0.3
+version: 1.0.4
 main: generator\Generator
 api: 3.7.0
 load: STARTUP

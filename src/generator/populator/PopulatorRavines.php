@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace generator\populator;
 
-use generator\utils\JavaRandom;
+use generator\utils\JRandom;
 use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\format\Chunk;
@@ -16,7 +16,7 @@ class PopulatorRavines extends Populator{
 	/** @var int */
 	protected $checkAreaSize = 8;
 
-	/** @var JavaRandom */
+	/** @var JRandom */
 	private $random;
 	/** @var int */
 	private $worldLong1;
@@ -50,7 +50,7 @@ class PopulatorRavines extends Populator{
 	 * @param Random       $random
 	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
-		$this->random = new JavaRandom;
+		$this->random = new JRandom;
 		$this->random->setSeed($level->getSeed());
 		$this->worldLong1 = $this->random->nextLong();
 		$this->worldLong2 = $this->random->nextLong();
@@ -109,7 +109,7 @@ class PopulatorRavines extends Populator{
 		int $paramLong, Chunk $generatingChunkBuffer, float $paramDouble1, float $paramDouble2, float $paramDouble3,
 		float $paramFloat1, float $paramFloat2, float $paramFloat3, int $size, float $paramDouble4
 	) : void{
-		$localRandom = new JavaRandom($paramLong);
+		$localRandom = new JRandom($paramLong);
 
 		$chunkX = $generatingChunkBuffer->getX();
 		$chunkZ = $generatingChunkBuffer->getZ();
@@ -251,12 +251,12 @@ class PopulatorRavines extends Populator{
 	}
 
 	/**
-	 * @param JavaRandom $random
+	 * @param JRandom $random
 	 * @param int        $min
 	 * @param int        $max
 	 * @return int
 	 */
-	public static function numberInRange(JavaRandom $random, int $min, int $max) : int{
+	public static function numberInRange(JRandom $random, int $min, int $max) : int{
 		return $min + $random->nextInt($max - $min + 1);
 	}
 }

@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace generator;
 
-use generator\biome\BeachBiome;
-use generator\biome\BiomeSelector;
-use generator\biome\DarkForestBiome;
-use generator\biome\DarkForestHillsBiome;
-use generator\biome\DesertBiome;
-use generator\biome\ForestBiome;
-use generator\biome\JungleBiome;
-use generator\biome\MountainEdgeBiome;
-use generator\biome\MountainsBiome;
-use generator\biome\MushroomFieldsBiome;
-use generator\biome\OceanBiome;
-use generator\biome\PlainBiome;
-use generator\biome\RiverBiome;
-use generator\biome\SavannaBiome;
-use generator\biome\SnowyTundraBiome;
-use generator\biome\SwampBiome;
-use generator\biome\TaigaBiome;
+use generator\biome\{BeachBiome,
+	BiomeSelector,
+	DarkForestBiome,
+	DarkForestHillsBiome,
+	DesertBiome,
+	ForestBiome,
+	JungleBiome,
+	MountainEdgeBiome,
+	MountainsBiome,
+	MushroomFieldsBiome,
+	OceanBiome,
+	PlainBiome,
+	RiverBiome,
+	SavannaBiome,
+	SnowyTundraBiome,
+	SwampBiome,
+	TaigaBiome};
 use generator\object\ore\OreType;
-use generator\populator\PopulatorCaves;
-use generator\populator\PopulatorGroundCover;
-use generator\populator\PopulatorOre;
-use generator\populator\PopulatorRavines;
-use generator\utils\JavaRandom;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\Stone;
+use generator\populator\{PopulatorCaves, PopulatorGroundCover, PopulatorOre, PopulatorRavines};
+use generator\utils\JRandom;
+use pocketmine\block\{Block, BlockFactory, Stone};
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\noise\Simplex;
@@ -47,8 +42,8 @@ class Normale extends \pocketmine\level\generator\Generator{
 
 	/** @var Random */
 	protected $random;
-	/** @var JavaRandom */
-	private $javaRandom;
+	/** @var JRandom */
+	private $JRandom;
 
 	/** @var int */
 	private $localSeed1;
@@ -105,8 +100,6 @@ class Normale extends \pocketmine\level\generator\Generator{
 	 * @throws \ReflectionException
 	 */
 	public function __construct(array $settings = []){
-		//Biome::init();
-
 		$reflectionMethod = new \ReflectionMethod(Biome::class, "register");
 		$reflectionMethod->setAccessible(true);
 
@@ -172,10 +165,10 @@ class Normale extends \pocketmine\level\generator\Generator{
 	public function init(ChunkManager $level, Random $random) : void{
 		$this->level = $level;
 		$this->random = $random;
-		$this->javaRandom = new JavaRandom;
+		$this->JRandom = new JRandom;
 		$this->random->setSeed($this->level->getSeed());
-		$this->localSeed1 = $this->javaRandom->nextLong();
-		$this->localSeed2 = $this->javaRandom->nextLong();
+		$this->localSeed1 = $this->JRandom->nextLong();
+		$this->localSeed2 = $this->JRandom->nextLong();
 		$this->noiseSeaFloor = new Simplex($this->random, 1.0, 1.0 / 8.0, 1.0 / 64.0);
 		$this->noiseLand = new Simplex($this->random, 2.0, 1.0 / 8.0, 1.0 / 512.0);
 		$this->noiseMountains = new Simplex($this->random, 4.0, 1.0, 1.0 / 500.0);
