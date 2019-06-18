@@ -231,7 +231,10 @@ class PopulatorRavines extends Populator{
 						for($localY = $minY; $localY >= $maxY; $localY--){
 							$d11 = (($localY - 1) + 0.5 - $paramDouble2) / $d4;
 							if(($d9 * $d9 + $d10 * $d10) * $this->a[$localY - 1] + $d11 * $d11 / 6.0 < 1.0){
-								$material = $generatingChunkBuffer->getBlockId((int) $localX, (int) $localY, (int) $localZ);
+								$localX = (int) $localX;
+								$localY = (int) $localY;
+								$localZ = (int) $localZ;
+								$material = $generatingChunkBuffer->getBlockId($localX, $localY, $localZ);
 								if($material == Block::GRASS){
 									if($localY - 1 < 10){
 										$generatingChunkBuffer->setBlock($localX, $localY, $localZ, Block::LAVA);
