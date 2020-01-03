@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace generator\objects\trees;
+namespace generator\object\tree;
 
-use generator\object\tree\TreeGenerator;
 use generator\utils\JRandom;
 use pocketmine\block\Block;
 use pocketmine\block\Dirt;
@@ -16,21 +15,6 @@ use pocketmine\utils\Random;
 
 class AcaciaTree extends TreeGenerator{
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Vector3      $v3
-	 * @return bool
-	 */
-	public function canPlaceOn(ChunkManager $level, Vector3 $v3) : bool{
-		return $level->getBlockIdAt($v3->x, $v3->y, $v3->z) == Block::GRASS || $level->getBlockIdAt($v3->x, $v3->y + 1, $v3->z) == Block::AIR ? true : false;
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $random
-	 * @param Vector3      $position
-	 * @return bool
-	 */
 	public function generate(ChunkManager $level, Random $random, Vector3 $position) : bool{
 		$JRandom = new JRandom;
 		$height = $JRandom->nextInt(3) + $JRandom->nextInt(3) + 5;
@@ -130,12 +114,10 @@ class AcaciaTree extends TreeGenerator{
 		return true;
 	}
 
-	/**
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @param ChunkManager $world
-	 */
+	public function canPlaceOn(ChunkManager $level, Vector3 $v3) : bool{
+		return $level->getBlockIdAt($v3->x, $v3->y, $v3->z) == Block::GRASS || $level->getBlockIdAt($v3->x, $v3->y + 1, $v3->z) == Block::AIR ? true : false;
+	}
+
 	private function setLeaves(int $x, int $y, int $z, ChunkManager $world){
 		if($world->getBlockIdAt($x, $y + 1, $z) == Block::AIR){
 			$this->setBlockAndNotifyAdequately($world, new Vector3($x, $y, $z), new Leaves2(Leaves2::ACACIA));

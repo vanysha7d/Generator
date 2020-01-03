@@ -23,13 +23,6 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 	/** @var int */
 	protected $extraRandomHeight;
 
-	/**
-	 * HugeTreesGenerator constructor.
-	 * @param int   $baseHeightIn
-	 * @param int   $extraRandomHeightIn
-	 * @param Block $woodMetadataIn
-	 * @param Block $leavesMetadataIn
-	 */
 	public function __construct(int $baseHeightIn, int $extraRandomHeightIn, Block $woodMetadataIn, Block $leavesMetadataIn){
 		$this->baseHeight = $baseHeightIn;
 		$this->extraRandomHeight = $extraRandomHeightIn;
@@ -37,10 +30,6 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 		$this->leavesMetadata = $leavesMetadataIn;
 	}
 
-	/**
-	 * @param Random $random
-	 * @return int
-	 */
 	protected function getHeight(Random $random) : int{
 		$i = $random->nextBoundedInt(3) + $this->baseHeight;
 
@@ -51,12 +40,10 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 		return $i;
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $leavesPos
-	 * @param int          $height
-	 * @return bool
-	 */
+	protected function ensureGrowable(ChunkManager $worldIn, Vector3 $treePos, int $p_175929_4_) : bool{
+		return $this->isSpaceAt($worldIn, $treePos, $p_175929_4_) && $this->ensureDirtsUnderneath($treePos, $worldIn);
+	}
+
 	private function isSpaceAt(ChunkManager $worldIn, Vector3 $leavesPos, int $height) : bool{
 		$flag = true;
 
@@ -88,11 +75,6 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param Vector3      $pos
-	 * @param ChunkManager $worldIn
-	 * @return bool
-	 */
 	private function ensureDirtsUnderneath(Vector3 $pos, ChunkManager $worldIn) : bool{
 		$blockpos = $pos->down();
 		$block = $worldIn->getBlockIdAt((int) $blockpos->x, (int) $blockpos->y, (int) $blockpos->z);
@@ -108,21 +90,6 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $treePos
-	 * @param int          $p_175929_4_
-	 * @return bool
-	 */
-	protected function ensureGrowable(ChunkManager $worldIn, Vector3 $treePos, int $p_175929_4_) : bool{
-		return $this->isSpaceAt($worldIn, $treePos, $p_175929_4_) && $this->ensureDirtsUnderneath($treePos, $worldIn);
-	}
-
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $layerCenter
-	 * @param int          $width
-	 */
 	protected function growLeavesLayerStrict(ChunkManager $worldIn, Vector3 $layerCenter, int $width) : void{
 		$i = $width * $width;
 
@@ -143,11 +110,6 @@ abstract class HugeTreesGenerator extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $layerCenter
-	 * @param int          $width
-	 */
 	protected function growLeavesLayer(ChunkManager $worldIn, Vector3 $layerCenter, int $width) : void{
 		$i = $width * $width;
 

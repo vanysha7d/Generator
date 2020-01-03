@@ -10,9 +10,6 @@ use generator\populator\PopulatorTree;
 
 class MountainsBiome extends GrassyBiome{
 
-	/**
-	 * MountainsBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -34,9 +31,6 @@ class MountainsBiome extends GrassyBiome{
 		$this->rainfall = 0.5;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Mountains";
 	}

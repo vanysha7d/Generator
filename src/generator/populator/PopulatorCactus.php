@@ -19,26 +19,14 @@ class PopulatorCactus extends Populator{
 	/** @var int */
 	private $baseAmount;
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->level = $level;
 		$amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
@@ -54,22 +42,6 @@ class PopulatorCactus extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @return bool
-	 */
-	private function canCactusStay(int $x, int $y, int $z) : bool{
-		$b = $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z);
-		return ($b == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y - 1, (int) $z) == Block::SAND && $this->level->getBlockIdAt((int) $x + 1, (int) $y, (int) $z) == Block::AIR && $this->level->getBlockIdAt((int) $x - 1, (int) $y, (int) $z) == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z + 1) == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z - 1) == Block::AIR);
-	}
-
-	/**
-	 * @param int $x
-	 * @param int $z
-	 * @return int
-	 */
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y >= 0; --$y){
 			$b = $this->level->getBlockIdAt($x, $y, $z);
@@ -79,5 +51,10 @@ class PopulatorCactus extends Populator{
 		}
 
 		return $y == 0 ? -1 : ++$y;
+	}
+
+	private function canCactusStay(int $x, int $y, int $z) : bool{
+		$b = $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z);
+		return ($b == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y - 1, (int) $z) == Block::SAND && $this->level->getBlockIdAt((int) $x + 1, (int) $y, (int) $z) == Block::AIR && $this->level->getBlockIdAt((int) $x - 1, (int) $y, (int) $z) == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z + 1) == Block::AIR && $this->level->getBlockIdAt((int) $x, (int) $y, (int) $z - 1) == Block::AIR);
 	}
 }

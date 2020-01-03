@@ -11,9 +11,6 @@ use generator\populator\tree\DarkOakTreePopulator;
 
 class DarkForestBiome extends GrassyBiome{
 
-	/**
-	 * DarkForestBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -40,9 +37,6 @@ class DarkForestBiome extends GrassyBiome{
 		$this->rainfall = 0.8;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Dark Forest";
 	}

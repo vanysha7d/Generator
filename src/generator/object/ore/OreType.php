@@ -19,14 +19,6 @@ class OreType{
 	/** @var int */
 	public $minHeight;
 
-	/**
-	 * OreType constructor.
-	 * @param Block $material
-	 * @param int   $clusterCount
-	 * @param int   $clusterSize
-	 * @param int   $minHeight
-	 * @param int   $maxHeight
-	 */
 	public function __construct(Block $material, int $clusterCount, int $clusterSize, int $minHeight, int $maxHeight){
 		$this->material = $material;
 		$this->clusterCount = $clusterCount;

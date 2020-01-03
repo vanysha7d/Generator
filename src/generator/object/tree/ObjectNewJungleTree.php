@@ -23,10 +23,6 @@ class ObjectNewJungleTree extends TreeGenerator{
 	/** @var Block */
 	private $metaLeaves;
 
-	/**
-	 * ObjectNewJungleTree constructor.
-	 * @param int $minTreeHeight
-	 */
 	public function __construct(int $minTreeHeight){
 		$this->minTreeHeight = $minTreeHeight;
 
@@ -34,12 +30,6 @@ class ObjectNewJungleTree extends TreeGenerator{
 		$this->metaLeaves = new Leaves(Leaves::JUNGLE);
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Random       $rand
-	 * @param Vector3      $vectorPosition
-	 * @return bool
-	 */
 	public function generate(ChunkManager $worldIn, Random $rand, Vector3 $vectorPosition) : bool{
 		$position = new Vector3($vectorPosition->getFloorX(), $vectorPosition->getFloorY(), $vectorPosition->getFloorZ());
 
@@ -177,20 +167,14 @@ class ObjectNewJungleTree extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 * @param int          $meta
-	 */
+	private function isAirBlock(ChunkManager $level, Vector3 $v) : bool{
+		return $level->getBlockIdAt((int) $v->x, (int) $v->y, (int) $v->z) == 0;
+	}
+
 	private function addVine(ChunkManager $worldIn, Vector3 $pos, int $meta) : void{
 		$this->setBlockAndNotifyAdequately($worldIn, $pos, new Vine($meta));
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 * @param int          $meta
-	 */
 	private function addHangingVine(ChunkManager $worldIn, Vector3 $pos, int $meta) : void{
 		$this->addVine($worldIn, $pos, $meta);
 		$i = 4;
@@ -199,14 +183,5 @@ class ObjectNewJungleTree extends TreeGenerator{
 			$this->addVine($worldIn, $pos, $meta);
 			$pos = $pos->down();
 		}
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param Vector3      $v
-	 * @return bool
-	 */
-	private function isAirBlock(ChunkManager $level, Vector3 $v) : bool{
-		return $level->getBlockIdAt((int) $v->x, (int) $v->y, (int) $v->z) == 0;
 	}
 }

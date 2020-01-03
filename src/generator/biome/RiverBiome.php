@@ -11,9 +11,6 @@ use generator\populator\PopulatorTallSugarcane;
 
 class RiverBiome extends WateryBiome{
 
-	/**
-	 * RiverBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -39,9 +36,6 @@ class RiverBiome extends WateryBiome{
 		$this->rainfall = 0.7;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "River";
 	}

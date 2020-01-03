@@ -12,12 +12,6 @@ use pocketmine\utils\Random;
 
 class PopulatorGroundCover extends Populator{
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$chunk = $level->getChunk($chunkX, $chunkZ);
 		for($x = 0; $x < 16; ++$x){

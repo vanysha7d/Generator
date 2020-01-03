@@ -8,6 +8,7 @@ use generator\Generator;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\utils\Random;
+use SplFixedArray;
 
 class BiomeSelector{
 
@@ -21,25 +22,24 @@ class BiomeSelector{
 	/** @var array */
 	private $biomes = [];
 
-	/** @var null|\SplFixedArray */
+	/** @var null|SplFixedArray */
 	private $map = null;
 
-	/**
-	 * BiomeSelector constructor.
-	 * @param Random $random
-	 * @param Biome  $fallback
-	 */
 	public function __construct(Random $random, Biome $fallback){
 		$this->fallback = $fallback;
 		$this->temperature = new Simplex($random, 2.0, 1.0 / 8.0, 1.0 / 1024.0);
 		$this->rainfall = new Simplex($random, 2.0, 1.0 / 8.0, 1.0 / 1024.0);
 	}
 
-	/**
-	 * @param float $temperature
-	 * @param float $rainfall
-	 * @return int
-	 */
+	public function recalculate() : void{
+		$this->map = new SplFixedArray(64 * 64);
+		for($i = 0; $i < 64; ++$i){
+			for($j = 0; $j < 64; ++$j){
+				$this->map[$i + ($j << 6)] = $this->lookup($i / 63.0, $j / 63.0);
+			}
+		}
+	}
+
 	public function lookup(float $temperature, float $rainfall) : int{
 		if($rainfall < 0.25){
 			return Generator::SWAMP;
@@ -71,45 +71,10 @@ class BiomeSelector{
 		return Generator::PLAINS;
 	}
 
-	public function recalculate() : void{
-		$this->map = new \SplFixedArray(64 * 64);
-		for($i = 0; $i < 64; ++$i){
-			for($j = 0; $j < 64; ++$j){
-				$this->map[$i + ($j << 6)] = $this->lookup($i / 63.0, $j / 63.0);
-			}
-		}
-	}
-
-	/**
-	 * @param Biome $biome
-	 */
 	public function addBiome(Biome $biome) : void{
 		$this->biomes[$biome->getId()] = true;
 	}
 
-	/**
-	 * @param float $x
-	 * @param float $z
-	 * @return float
-	 */
-	public function getTemperature(float $x, float $z) : float{
-		return ($this->temperature->noise2D($x, $z, true) + 1) / 2;
-	}
-
-	/**
-	 * @param float $x
-	 * @param float $z
-	 * @return float
-	 */
-	public function getRainfall(float $x, float $z) : float{
-		return ($this->rainfall->noise2D($x, $z, true) + 1) / 2;
-	}
-
-	/**
-	 * @param float $x
-	 * @param float $z
-	 * @return Biome
-	 */
 	public function pickBiome(float $x, float $z) : Biome{
 		$temperature = (int) ($this->getTemperature($x, $z) * 63);
 		$rainfall = (int) ($this->getRainfall($x, $z) * 63);
@@ -120,5 +85,13 @@ class BiomeSelector{
 		}else{
 			return $this->fallback;
 		}
+	}
+
+	public function getTemperature(float $x, float $z) : float{
+		return ($this->temperature->noise2D($x, $z, true) + 1) / 2;
+	}
+
+	public function getRainfall(float $x, float $z) : float{
+		return ($this->rainfall->noise2D($x, $z, true) + 1) / 2;
 	}
 }

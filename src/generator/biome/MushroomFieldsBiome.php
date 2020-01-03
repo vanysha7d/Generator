@@ -10,9 +10,6 @@ use pocketmine\block\BlockFactory;
 
 class MushroomFieldsBiome extends NormalBiome implements CaveBiome{
 
-	/**
-	 * MushroomFieldsBiome constructor.
-	 */
 	public function __construct(){
 		$this->setGroundCover([
 			BlockFactory::get(Block::MYCELIUM),
@@ -32,30 +29,18 @@ class MushroomFieldsBiome extends NormalBiome implements CaveBiome{
 		$this->rainfall = 1.0;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Mushroom Fields";
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getSurfaceBlock() : int{
 		return Block::MYCELIUM;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getGroundBlock() : int{
 		return Block::DIRT;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getStoneBlock() : int{
 		return Block::STONE;
 	}

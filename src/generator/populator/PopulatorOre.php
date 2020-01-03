@@ -22,12 +22,6 @@ class PopulatorOre extends Populator{
 		$this->replaceId = $id;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		foreach($this->oreTypes as $type){
 			$ore = new ObjectOre($random, $type, $this->replaceId);
@@ -42,9 +36,6 @@ class PopulatorOre extends Populator{
 		}
 	}
 
-	/**
-	 * @param array $oreTypes
-	 */
 	public function setOreTypes(array $oreTypes){
 		$this->oreTypes = $oreTypes;
 	}

@@ -9,9 +9,6 @@ use pocketmine\block\BlockFactory;
 
 class BeachBiome extends SandyBiome{
 
-	/**
-	 * BeachBiome constructor.
-	 */
 	public function __construct(){
 		$this->setGroundCover([
 			BlockFactory::get(Block::SAND),
@@ -27,9 +24,6 @@ class BeachBiome extends SandyBiome{
 		$this->rainfall = 0;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Beach";
 	}

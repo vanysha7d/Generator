@@ -12,9 +12,6 @@ use pocketmine\block\Sapling;
 
 class SavannaBiome extends GrassyBiome{
 
-	/**
-	 * SavannaBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -40,9 +37,6 @@ class SavannaBiome extends GrassyBiome{
 		$this->rainfall = 0.0;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Savanna";
 	}

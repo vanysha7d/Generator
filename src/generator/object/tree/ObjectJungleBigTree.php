@@ -12,23 +12,10 @@ use pocketmine\utils\Random;
 
 class ObjectJungleBigTree extends HugeTreesGenerator{
 
-	/**
-	 * ObjectJungleBigTree constructor.
-	 * @param int   $baseHeightIn
-	 * @param int   $extraRandomHeight
-	 * @param Block $woodMetadata
-	 * @param Block $leavesMetadata
-	 */
 	public function __construct(int $baseHeightIn, int $extraRandomHeight, Block $woodMetadata, Block $leavesMetadata){
 		parent::__construct($baseHeightIn, $extraRandomHeight, $woodMetadata, $leavesMetadata);
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $rand
-	 * @param Vector3      $position
-	 * @return bool
-	 */
 	public function generate(ChunkManager $level, Random $rand, Vector3 $position) : bool{
 		$height = $this->getHeight($rand);
 
@@ -109,26 +96,15 @@ class ObjectJungleBigTree extends HugeTreesGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $random
-	 * @param Vector3      $pos
-	 * @param int          $meta
-	 */
-	private function placeVine(ChunkManager $level, Random $random, Vector3 $pos, int $meta) : void{
-		if($random->nextBoundedInt(3) > 0 && $level->getBlockIdAt((int) $pos->x, (int) $pos->y, (int) $pos->z) == 0){
-			$this->setBlockAndNotifyAdequately($level, $pos, new Vine($meta));
-		}
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param Vector3      $pos
-	 * @param int          $i1
-	 */
 	private function createCrown(ChunkManager $level, Vector3 $pos, int $i1) : void{
 		for($j = -2; $j <= 0; ++$j){
 			$this->growLeavesLayerStrict($level, $pos->up($j), $i1 + 1 - $j);
+		}
+	}
+
+	private function placeVine(ChunkManager $level, Random $random, Vector3 $pos, int $meta) : void{
+		if($random->nextBoundedInt(3) > 0 && $level->getBlockIdAt((int) $pos->x, (int) $pos->y, (int) $pos->z) == 0){
+			$this->setBlockAndNotifyAdequately($level, $pos, new Vine($meta));
 		}
 	}
 }

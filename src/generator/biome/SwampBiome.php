@@ -12,9 +12,6 @@ use pocketmine\block\Flower;
 
 class SwampBiome extends GrassyBiome{
 
-	/**
-	 * SwampBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -37,9 +34,6 @@ class SwampBiome extends GrassyBiome{
 		$this->rainfall = 0.9;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Swamp";
 	}

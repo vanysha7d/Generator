@@ -11,13 +11,6 @@ use pocketmine\utils\Random;
 
 class ObjectTallGrass{
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Vector3      $pos
-	 * @param Random       $random
-	 * @param int          $count
-	 * @param int          $radius
-	 */
 	public static function growGrass(ChunkManager $level, Vector3 $pos, Random $random, int $count, int $radius) : void{
 		$arr = [
 			[Block::DANDELION, 0],

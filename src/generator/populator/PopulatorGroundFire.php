@@ -20,26 +20,14 @@ class PopulatorGroundFire extends Populator{
 	/** @var int */
 	private $baseAmount;
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->level = $level;
 		$chunk = $level->getChunk($chunkX, $chunkZ);
@@ -55,24 +43,6 @@ class PopulatorGroundFire extends Populator{
 		}
 	}
 
-	/**
-	 * @param Chunk $chunk
-	 * @param int   $x
-	 * @param int   $y
-	 * @param int   $z
-	 * @return bool
-	 */
-	private function canGroundFireStay(Chunk $chunk, int $x, int $y, int $z) : bool{
-		$b = $chunk->getBlockId($x, $y, $z);
-		return ($b == Block::AIR) && $chunk->getBlockId($x, $y - 1, $z) == Block::NETHERRACK;
-	}
-
-	/**
-	 * @param Chunk $chunk
-	 * @param int   $x
-	 * @param int   $z
-	 * @return int
-	 */
 	private function getHighestWorkableBlock(Chunk $chunk, int $x, int $z) : int{
 		for($y = 0; $y <= 127; ++$y){
 			$b = $chunk->getBlockId($x, $y, $z);
@@ -81,5 +51,10 @@ class PopulatorGroundFire extends Populator{
 			}
 		}
 		return $y == 0 ? -1 : $y;
+	}
+
+	private function canGroundFireStay(Chunk $chunk, int $x, int $y, int $z) : bool{
+		$b = $chunk->getBlockId($x, $y, $z);
+		return ($b == Block::AIR) && $chunk->getBlockId($x, $y - 1, $z) == Block::NETHERRACK;
 	}
 }

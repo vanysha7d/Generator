@@ -14,43 +14,24 @@ class ObjectJungleTree extends ObjectTree{
 	/** @var int */
 	private $treeHeight = 8;
 
-	/**
-	 * @return int
-	 */
-    public function getTrunkBlock() : int {
-        return Block::LOG;
-    }
+	public function getTrunkBlock() : int{
+		return Block::LOG;
+	}
 
-	/**
-	 * @return int
-	 */
-    public function getLeafBlock() : int {
-        return Block::LEAVES;
-    }
+	public function getLeafBlock() : int{
+		return Block::LEAVES;
+	}
 
-	/**
-	 * @return int
-	 */
-    public function getType() : int {
-        return Wood::JUNGLE;
-    }
+	public function getType() : int{
+		return Wood::JUNGLE;
+	}
 
-	/**
-	 * @return int
-	 */
-    public function getTreeHeight()  : int{
-        return $this->treeHeight;
-    }
+	public function getTreeHeight() : int{
+		return $this->treeHeight;
+	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @param Random       $random
-	 */
-    public function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void{
-        $this->treeHeight = $random->nextBoundedInt(6) + 4;
-        parent::placeObject($level, $x, $y, $z, $random);
-    }
+	public function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void{
+		$this->treeHeight = $random->nextBoundedInt(6) + 4;
+		parent::placeObject($level, $x, $y, $z, $random);
+	}
 }

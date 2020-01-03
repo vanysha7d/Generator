@@ -15,41 +15,10 @@ class ObjectSpruceTree extends ObjectTree{
 	/** @var int */
 	private $treeHeight = 15;
 
-	/**
-	 * @return int
-	 */
 	public function getTrunkBlock() : int{
 		return Block::LOG;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getLeafBlock() : int{
-		return Block::LEAVES;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getType() : int{
-		return Wood::SPRUCE;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTreeHeight() : int{
-		return $this->treeHeight;
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @param Random       $random
-	 */
 	public function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void{
 		$this->treeHeight = $random->nextBoundedInt(4) + 6;
 
@@ -90,5 +59,17 @@ class ObjectSpruceTree extends ObjectTree{
 				++$radius;
 			}
 		}
+	}
+
+	public function getTreeHeight() : int{
+		return $this->treeHeight;
+	}
+
+	public function getLeafBlock() : int{
+		return Block::LEAVES;
+	}
+
+	public function getType() : int{
+		return Wood::SPRUCE;
 	}
 }

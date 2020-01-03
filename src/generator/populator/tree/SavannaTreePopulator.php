@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace generator\populator\tree;
 
 use generator\math\Math;
-use generator\objects\trees\AcaciaTree;
+use generator\object\tree\AcaciaTree;
 use pocketmine\block\Block;
 use pocketmine\block\Sapling;
 use pocketmine\level\ChunkManager;
@@ -29,26 +29,14 @@ class SavannaTreePopulator extends Populator{
 		$this->type = $type;
 	}
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->level = $level;
 		$amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
@@ -61,16 +49,10 @@ class SavannaTreePopulator extends Populator{
 			if($y == -1){
 				continue;
 			}
-			//(new ObjectSavannaTree)->generate($level, $random, $v->setComponents($x, $y, $z));
 			(new AcaciaTree)->generate($level, $random, $v->setComponents($x, $y, $z));
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $z
-	 * @return int
-	 */
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y > 0; --$y){
 			$b = $this->level->getBlockIdAt($x, $y, $z);

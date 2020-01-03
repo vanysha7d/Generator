@@ -10,9 +10,6 @@ use pocketmine\block\Sapling;
 
 class SnowyTundraBiome extends SnowyBiome{
 
-	/**
-	 * SnowyTundraBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -31,9 +28,6 @@ class SnowyTundraBiome extends SnowyBiome{
 		$this->rainfall = 0.5;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Snowy Tundra";
 	}

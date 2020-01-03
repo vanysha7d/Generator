@@ -9,9 +9,6 @@ use generator\populator\PopulatorTallSugarcane;
 
 class OceanBiome extends WateryBiome{
 
-	/**
-	 * OceanBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -29,16 +26,10 @@ class OceanBiome extends WateryBiome{
 		$this->rainfall = 0.5;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getGroundCover() : array{
 		return parent::getGroundCover();
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Ocean";
 	}

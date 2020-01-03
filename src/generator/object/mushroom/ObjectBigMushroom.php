@@ -16,18 +16,12 @@ use pocketmine\utils\Random;
 class ObjectBigMushroom extends BasicGenerator{
 
 	public const NORTH_WEST = 1;
-	public const NORTH = 2;
 	public const NORTH_EAST = 3;
-	public const WEST = 4;
 	public const CENTER = 5;
-	public const EAST = 6;
 	public const SOUTH_WEST = 7;
-	public const SOUTH = 8;
 	public const SOUTH_EAST = 9;
 	public const STEM = 10;
 	public const ALL_INSIDE = 0;
-	public const ALL_OUTSIDE = 14;
-	public const ALL_STEM = 15;
 
 	public const BROWN = 0;
 	public const RED = 1;
@@ -35,20 +29,10 @@ class ObjectBigMushroom extends BasicGenerator{
 	/** @var int */
 	private $mushroomType;
 
-	/**
-	 * BigMushroom constructor.
-	 * @param int $mushroomType
-	 */
 	public function __construct(int $mushroomType = -1){
 		$this->mushroomType = $mushroomType;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $rand
-	 * @param Vector3      $position
-	 * @return bool
-	 */
 	public function generate(ChunkManager $level, Random $rand, Vector3 $position) : bool{
 		$block = $this->mushroomType;
 		if($block < 0){

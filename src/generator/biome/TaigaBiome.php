@@ -11,9 +11,6 @@ use pocketmine\block\Sapling;
 
 class TaigaBiome extends SnowyBiome{
 
-	/**
-	 * TaigaBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -35,9 +32,6 @@ class TaigaBiome extends SnowyBiome{
 		$this->rainfall = 0.8;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Taiga";
 	}

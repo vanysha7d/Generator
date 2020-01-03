@@ -19,26 +19,14 @@ class PopulatorTallGrass extends Populator{
 	/** @var int */
 	private $baseAmount;
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->level = $level;
 		$amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
@@ -56,22 +44,6 @@ class PopulatorTallGrass extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @return bool
-	 */
-	private function canTallGrassStay(int $x, int $y, int $z) : bool{
-		$b = $this->level->getBlockIdAt($x, $y, $z);
-		return ($b == Block::AIR || $b == Block::SNOW_LAYER) && $this->level->getBlockIdAt($x, $y - 1, $z) == Block::GRASS && $this->level->getBlockIdAt($x, $y + 1, $z) == Block::AIR;
-	}
-
-	/**
-	 * @param int $x
-	 * @param int $z
-	 * @return int
-	 */
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y >= 0; --$y){
 			$b = $this->level->getBlockIdAt($x, $y, $z);
@@ -81,5 +53,10 @@ class PopulatorTallGrass extends Populator{
 		}
 
 		return $y == 0 ? -1 : ++$y;
+	}
+
+	private function canTallGrassStay(int $x, int $y, int $z) : bool{
+		$b = $this->level->getBlockIdAt($x, $y, $z);
+		return ($b == Block::AIR || $b == Block::SNOW_LAYER) && $this->level->getBlockIdAt($x, $y - 1, $z) == Block::GRASS && $this->level->getBlockIdAt($x, $y + 1, $z) == Block::AIR;
 	}
 }

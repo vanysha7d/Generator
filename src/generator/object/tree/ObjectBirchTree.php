@@ -14,41 +14,22 @@ class ObjectBirchTree extends ObjectTree{
 	/** @var int */
 	protected $treeHeight = 7;
 
-	/**
-	 * @return int
-	 */
 	public function getTrunkBlock() : int{
 		return Block::LOG;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getLeafBlock() : int{
 		return Block::LEAVES;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getType() : int{
 		return Wood::BIRCH;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getTreeHeight() : int{
 		return $this->treeHeight;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @param Random       $random
-	 */
 	public function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void{
 		$this->treeHeight = $random->nextBoundedInt(3) + 5;
 		parent::placeObject($level, $x, $y, $z, $random);

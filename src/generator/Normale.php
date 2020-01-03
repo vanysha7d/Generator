@@ -31,28 +31,28 @@ use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use ReflectionMethod;
 
 class Normale extends \pocketmine\level\generator\Generator{
 
-	/** @var Populator[] */
-	private $populators = [];
-
 	/** @var ChunkManager */
 	protected $level;
-
 	/** @var Random */
 	protected $random;
+	/** @var float */
+	protected $rainfall = 0.5;
+	/** @var float */
+	protected $temperature = 0.5;
+	/** @var Populator[] */
+	private $populators = [];
 	/** @var JRandom */
 	private $JRandom;
-
 	/** @var int */
 	private $localSeed1;
 	/** @var int */
 	private $localSeed2;
-
 	/** @var Populator[] */
 	private $generationPopulators = [];
-
 	/** @var Simplex */
 	private $noiseSeaFloor;
 	/** @var Simplex */
@@ -63,13 +63,10 @@ class Normale extends \pocketmine\level\generator\Generator{
 	private $noiseBaseGround;
 	/** @var Simplex */
 	private $noiseRiver;
-
 	/** @var BiomeSelector */
 	private $selector;
-
 	/** @var int */
 	private $heightOffset;
-
 	/** @var int */
 	private $seaHeight = 64;
 	/** @var int */
@@ -89,18 +86,8 @@ class Normale extends \pocketmine\level\generator\Generator{
 	/** @var int */
 	private $basegroundHeight = 3;
 
-	/** @var float */
-	protected $rainfall = 0.5;
-	/** @var float */
-	protected $temperature = 0.5;
-
-	/**
-	 * Normale constructor.
-	 * @param array $settings
-	 * @throws \ReflectionException
-	 */
 	public function __construct(array $settings = []){
-		$reflectionMethod = new \ReflectionMethod(Biome::class, "register");
+		$reflectionMethod = new ReflectionMethod(Biome::class, "register");
 		$reflectionMethod->setAccessible(true);
 
 		$reflectionMethod->invoke(null, Generator::OCEAN, new OceanBiome);
@@ -122,46 +109,14 @@ class Normale extends \pocketmine\level\generator\Generator{
 		$reflectionMethod->invoke(null, Generator::DARK_FOREST_HILLS, new DarkForestHillsBiome);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "normale";
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getSettings() : array{
 		return [];
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $z
-	 * @return Biome
-	 */
-	public function pickBiome(int $x, int $z) : Biome{
-		$hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
-		$hash *= $hash + 223;
-
-		$xNoise = $hash >> 20 & 3;
-		$zNoise = $hash >> 22 & 3;
-
-		if($xNoise == 3){
-			$xNoise = 1;
-		}
-		if($zNoise == 3){
-			$zNoise = 1;
-		}
-
-		return $this->selector->pickBiome($x + $xNoise - 1, $z + $zNoise - 1);
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $random
-	 */
 	public function init(ChunkManager $level, Random $random) : void{
 		$this->level = $level;
 		$this->random = $random;
@@ -221,10 +176,6 @@ class Normale extends \pocketmine\level\generator\Generator{
 		$this->populators[] = $ores;
 	}
 
-	/**
-	 * @param int $chunkX
-	 * @param int $chunkZ
-	 */
 	public function generateChunk(int $chunkX, int $chunkZ) : void{
 		$this->random->setSeed($chunkX * $this->localSeed1 ^ $chunkZ * $this->localSeed2 ^ $this->level->getSeed());
 
@@ -342,10 +293,23 @@ class Normale extends \pocketmine\level\generator\Generator{
 		}
 	}
 
-	/**
-	 * @param int $chunkX
-	 * @param int $chunkZ
-	 */
+	public function pickBiome(int $x, int $z) : Biome{
+		$hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
+		$hash *= $hash + 223;
+
+		$xNoise = $hash >> 20 & 3;
+		$zNoise = $hash >> 22 & 3;
+
+		if($xNoise == 3){
+			$xNoise = 1;
+		}
+		if($zNoise == 3){
+			$zNoise = 1;
+		}
+
+		return $this->selector->pickBiome($x + $xNoise - 1, $z + $zNoise - 1);
+	}
+
 	public function populateChunk(int $chunkX, int $chunkZ) : void{
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 		foreach($this->populators as $populator){
@@ -357,9 +321,6 @@ class Normale extends \pocketmine\level\generator\Generator{
 		$biome->populateChunk($this->level, $chunkX, $chunkZ, $this->random);
 	}
 
-	/**
-	 * @return Vector3
-	 */
 	public function getSpawn() : Vector3{
 		return new Vector3(127.5, 256, 127.5);
 	}

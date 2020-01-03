@@ -19,20 +19,11 @@ class ObjectDarkOakTree extends TreeGenerator{
 	/** @var Block */
 	private $darkOakLeaves;
 
-	/**
-	 * ObjectDarkOakTree constructor.
-	 */
 	public function __construct(){
 		$this->darkOakLog = new Wood2(Wood2::DARK_OAK);
 		$this->darkOakLeaves = new Leaves2(Leaves2::DARK_OAK);
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param Random       $rand
-	 * @param Vector3      $position
-	 * @return bool
-	 */
 	public function generate(ChunkManager $level, Random $rand, Vector3 $position) : bool{
 		$i = $rand->nextBoundedInt(3) + $rand->nextBoundedInt(2) + 6;
 		$j = $position->getFloorX();
@@ -143,12 +134,6 @@ class ObjectDarkOakTree extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 * @param int          $height
-	 * @return bool
-	 */
 	private function placeTreeOfHeight(ChunkManager $worldIn, Vector3 $pos, int $height) : bool{
 		$i = $pos->getFloorX();
 		$j = $pos->getFloorY();
@@ -179,22 +164,12 @@ class ObjectDarkOakTree extends TreeGenerator{
 		return true;
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 */
 	private function placeLogAt(ChunkManager $worldIn, Vector3 $pos) : void{
 		if($this->canGrowInto($worldIn->getBlockIdAt((int) $pos->getFloorX(), (int) $pos->getFloorY(), (int) $pos->getFloorZ()))){
 			$this->setBlockAndNotifyAdequately($worldIn, $pos, $this->darkOakLog);
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 */
 	private function placeLeafAt(ChunkManager $worldIn, int $x, int $y, int $z) : void{
 		$blockpos = new Vector3($x, $y, $z);
 		$material = $worldIn->getBlockIdAt((int) $blockpos->getFloorX(), (int) $blockpos->getFloorY(), (int) $blockpos->getFloorZ());

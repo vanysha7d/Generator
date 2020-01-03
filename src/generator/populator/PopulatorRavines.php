@@ -43,12 +43,6 @@ class PopulatorRavines extends Populator{
 	/** @var array */
 	private $a = [];
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->random = new JRandom;
 		$this->random->setSeed($level->getSeed());
@@ -67,11 +61,6 @@ class PopulatorRavines extends Populator{
 		}
 	}
 
-	/**
-	 * @param int   $chunkX
-	 * @param int   $chunkZ
-	 * @param Chunk $generatingChunkBuffer
-	 */
 	protected function generateChunk(int $chunkX, int $chunkZ, Chunk $generatingChunkBuffer) : void{
 		if($this->random->nextInt(300) >= $this->ravineRarity){
 			return;
@@ -93,18 +82,10 @@ class PopulatorRavines extends Populator{
 		}
 	}
 
-	/**
-	 * @param int   $paramLong
-	 * @param Chunk $generatingChunkBuffer
-	 * @param float $paramDouble1
-	 * @param float $paramDouble2
-	 * @param float $paramDouble3
-	 * @param float $paramFloat1
-	 * @param float $paramFloat2
-	 * @param float $paramFloat3
-	 * @param int   $size
-	 * @param float $paramDouble4
-	 */
+	public static function numberInRange(JRandom $random, int $min, int $max) : int{
+		return $min + $random->nextInt($max - $min + 1);
+	}
+
 	protected function createRavine(
 		int $paramLong, Chunk $generatingChunkBuffer, float $paramDouble1, float $paramDouble2, float $paramDouble3,
 		float $paramFloat1, float $paramFloat2, float $paramFloat3, int $size, float $paramDouble4
@@ -231,15 +212,12 @@ class PopulatorRavines extends Populator{
 						for($localY = $minY; $localY >= $maxY; $localY--){
 							$d11 = (($localY - 1) + 0.5 - $paramDouble2) / $d4;
 							if(($d9 * $d9 + $d10 * $d10) * $this->a[$localY - 1] + $d11 * $d11 / 6.0 < 1.0){
-								$localX = (int) $localX;
-								$localY = (int) $localY;
-								$localZ = (int) $localZ;
-								$material = $generatingChunkBuffer->getBlockId($localX, $localY, $localZ);
+								$material = $generatingChunkBuffer->getBlockId((int) $localX, (int) $localY, (int) $localZ);
 								if($material == Block::GRASS){
-									if($localY - 1 < 10){
-										$generatingChunkBuffer->setBlock($localX, $localY, $localZ, Block::LAVA);
+									if((int) $localY - 1 < 10){
+										$generatingChunkBuffer->setBlock((int) $localX, (int) $localY, (int) $localZ, Block::LAVA);
 									}else{
-										$generatingChunkBuffer->setBlock($localX, $localY, $localZ, Block::AIR);
+										$generatingChunkBuffer->setBlock((int) $localX, (int) $localY, (int) $localZ, Block::AIR);
 									}
 								}
 							}
@@ -251,15 +229,5 @@ class PopulatorRavines extends Populator{
 				break;
 			}
 		}
-	}
-
-	/**
-	 * @param JRandom $random
-	 * @param int        $min
-	 * @param int        $max
-	 * @return int
-	 */
-	public static function numberInRange(JRandom $random, int $min, int $max) : int{
-		return $min + $random->nextInt($max - $min + 1);
 	}
 }

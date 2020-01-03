@@ -19,26 +19,14 @@ class PopulatorSugarcane extends Populator{
 	/** @var int */
 	private $baseAmount;
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->level = $level;
 		$amount = $random->nextBoundedInt($this->randomAmount + 1) + $this->baseAmount;
@@ -54,12 +42,23 @@ class PopulatorSugarcane extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @return bool
-	 */
+	private function getHighestWorkableBlock(int $x, int $z) : int{
+		for($y = 127; $y >= 0; --$y){
+			$b = $this->level->getBlockIdAt($x, $y, $z);
+			if($b != Block::AIR && $b != Block::LEAVES && $b != Block::LEAVES2){
+				break;
+			}
+		}
+
+		return $y == 0 ? -1 : ++$y;
+	}
+
+	private function canSugarcaneStay(int $x, int $y, int $z) : bool{
+		$b = $this->level->getBlockIdAt($x, $y, $z);
+		$c = $this->level->getBlockIdAt($x, $y - 1, $z);
+		return ($b == Block::AIR) && ($c == Block::SAND || $c == Block::GRASS) && $this->findWater($x, $y - 1, $z);
+	}
+
 	private function findWater(int $x, int $y, int $z) : bool{
 		$count = 0;
 		for($i = $x - 4; $i < ($x + 4); $i++){
@@ -74,33 +73,5 @@ class PopulatorSugarcane extends Populator{
 			}
 		}
 		return ($count > 10);
-	}
-
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @return bool
-	 */
-	private function canSugarcaneStay(int $x, int $y, int $z) : bool{
-		$b = $this->level->getBlockIdAt($x, $y, $z);
-		$c = $this->level->getBlockIdAt($x, $y - 1, $z);
-		return ($b == Block::AIR) && ($c == Block::SAND || $c == Block::GRASS) && $this->findWater($x, $y - 1, $z);
-	}
-
-	/**
-	 * @param int $x
-	 * @param int $z
-	 * @return int
-	 */
-	private function getHighestWorkableBlock(int $x, int $z) : int{
-		for($y = 127; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b != Block::AIR && $b != Block::LEAVES && $b != Block::LEAVES2){
-				break;
-			}
-		}
-
-		return $y == 0 ? -1 : ++$y;
 	}
 }

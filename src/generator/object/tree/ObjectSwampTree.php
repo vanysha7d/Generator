@@ -20,20 +20,11 @@ class ObjectSwampTree extends TreeGenerator{
 	/** @var Block */
 	private $metaLeaves;
 
-	/**
-	 * ObjectSwampTree constructor.
-	 */
 	public function __construct(){
 		$this->metaWood = new Wood(Wood::OAK);
 		$this->metaLeaves = new Leaves(Leaves::OAK);
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Random       $rand
-	 * @param Vector3      $vectorPosition
-	 * @return bool
-	 */
 	public function generate(ChunkManager $worldIn, Random $rand, Vector3 $vectorPosition) : bool{
 		$position = new Vector3($vectorPosition->getFloorX(), $vectorPosition->getFloorY(), $vectorPosition->getFloorZ());
 
@@ -152,20 +143,6 @@ class ObjectSwampTree extends TreeGenerator{
 		}
 	}
 
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 * @param int          $meta
-	 */
-	private function addVine(ChunkManager $worldIn, Vector3 $pos, int $meta) : void{
-		$this->setBlockAndNotifyAdequately($worldIn, $pos, new Vine($meta));
-	}
-
-	/**
-	 * @param ChunkManager $worldIn
-	 * @param Vector3      $pos
-	 * @param int          $meta
-	 */
 	private function addHangingVine(ChunkManager $worldIn, Vector3 $pos, int $meta) : void{
 		$this->addVine($worldIn, $pos, $meta);
 		$i = 4;
@@ -174,5 +151,9 @@ class ObjectSwampTree extends TreeGenerator{
 			$this->addVine($worldIn, $pos, $meta);
 			$pos = $pos->down();
 		}
+	}
+
+	private function addVine(ChunkManager $worldIn, Vector3 $pos, int $meta) : void{
+		$this->setBlockAndNotifyAdequately($worldIn, $pos, new Vine($meta));
 	}
 }

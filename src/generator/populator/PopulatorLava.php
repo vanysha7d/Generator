@@ -22,26 +22,14 @@ class PopulatorLava extends Populator{
 	/** @var Random */
 	private $random;
 
-	/**
-	 * @param int $randomAmount
-	 */
 	public function setRandomAmount(int $randomAmount) : void{
 		$this->randomAmount = $randomAmount;
 	}
 
-	/**
-	 * @param int $baseAmount
-	 */
 	public function setBaseAmount(int $baseAmount) : void{
 		$this->baseAmount = $baseAmount;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $chunkX
-	 * @param int          $chunkZ
-	 * @param Random       $random
-	 */
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random) : void{
 		$this->random = $random;
 		if($random->nextRange(0, 100) < 5){
@@ -63,28 +51,16 @@ class PopulatorLava extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x1
-	 * @param int $y1
-	 * @param int $z1
-	 * @param int $x2
-	 * @param int $y2
-	 * @param int $z2
-	 * @return int
-	 */
-	private function getFlowDecay(int $x1, int $y1, int $z1, int $x2, int $y2, int $z2) : int{
-		if($this->level->getBlockIdAt($x1, $y1, $z1) != $this->level->getBlockIdAt($x2, $y2, $z2)){
-			return -1;
-		}else{
-			return $this->level->getBlockDataAt($x2, $y2, $z2);
+	private function getHighestWorkableBlock(Chunk $chunk, int $x, int $z) : int{
+		for($y = 127; $y >= 0; $y--){
+			$b = $chunk->getBlockId($x, $y, $z);
+			if($b == Block::AIR){
+				break;
+			}
 		}
+		return $y == 0 ? -1 : $y;
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 */
 	private function lavaSpread(int $x, int $y, int $z) : void{
 		if($this->level->getChunk($x >> 4, $z >> 4) == null){
 			return;
@@ -156,12 +132,31 @@ class PopulatorLava extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @param int $newFlowDecay
-	 */
+	private function getFlowDecay(int $x1, int $y1, int $z1, int $x2, int $y2, int $z2) : int{
+		if($this->level->getBlockIdAt($x1, $y1, $z1) != $this->level->getBlockIdAt($x2, $y2, $z2)){
+			return -1;
+		}else{
+			return $this->level->getBlockDataAt($x2, $y2, $z2);
+		}
+	}
+
+	private function getSmallestFlowDecay(int $x1, int $y1, int $z1, int $x2, int $y2, int $z2, int $decay) : int{
+		$blockDecay = $this->getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2);
+		if($blockDecay < 0){
+			return $decay;
+		}else{
+			if($blockDecay >= 8){
+				$blockDecay = 0;
+			}
+		}
+		return ($decay >= 0 && $blockDecay >= $decay) ? $decay : $blockDecay;
+	}
+
+	private function canFlowInto(int $x, int $y, int $z) : bool{
+		$id = $this->level->getBlockIdAt($x, $y, $z);
+		return $id == Block::AIR || $id == Block::LAVA || $id == Block::STILL_LAVA;
+	}
+
 	private function flowIntoBlock(int $x, int $y, int $z, int $newFlowDecay) : void{
 		if($this->level->getBlockIdAt($x, $y, $z) == Block::AIR){
 			$this->level->setBlockIdAt($x, $y, $z, Block::LAVA);
@@ -170,81 +165,6 @@ class PopulatorLava extends Populator{
 		}
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $z
-	 * @return bool
-	 */
-	private function canFlowInto(int $x, int $y, int $z) : bool{
-		$id = $this->level->getBlockIdAt($x, $y, $z);
-		return $id == Block::AIR || $id == Block::LAVA || $id == Block::STILL_LAVA;
-	}
-
-	/**
-	 * @param int $xx
-	 * @param int $yy
-	 * @param int $zz
-	 * @param int $accumulatedCost
-	 * @param int $previousDirection
-	 * @return int
-	 */
-	private function calculateFlowCost(int $xx, int $yy, int $zz, int $accumulatedCost, int $previousDirection) : int{
-		$cost = 1000;
-		for($j = 0; $j < 4; ++$j){
-			if(
-				($j == 0 && $previousDirection == 1) ||
-				($j == 1 && $previousDirection == 0) ||
-				($j == 2 && $previousDirection == 3) ||
-				($j == 3 && $previousDirection == 2)
-			){
-				$x = $xx;
-				$y = $yy;
-				$z = $zz;
-				if($j == 0){
-					--$x;
-				}else{
-					if($j == 1){
-						++$x;
-					}else{
-						if($j == 2){
-							--$z;
-						}else{
-							if($j == 3){
-								++$z;
-							}
-						}
-					}
-				}
-				if(!$this->canFlowInto($x, $y, $z)){
-					continue;
-				}else{
-					if($this->canFlowInto($x, $y, $z) && $this->level->getBlockDataAt($x, $y, $z) == 0){
-						continue;
-					}else{
-						if($this->canFlowInto($x, $y - 1, $z)){
-							return $accumulatedCost;
-						}
-					}
-				}
-				if($accumulatedCost >= 4){
-					continue;
-				}
-				$realCost = $this->calculateFlowCost($x, $y, $z, $accumulatedCost + 1, $j);
-				if($realCost < $cost){
-					$cost = $realCost;
-				}
-			}
-		}
-		return $cost;
-	}
-
-	/**
-	 * @param int $xx
-	 * @param int $yy
-	 * @param int $zz
-	 * @return array
-	 */
 	private function getOptimalFlowDirections(int $xx, int $yy, int $zz) : array{
 		$flowCost = [0, 0, 0, 0];
 		$isOptimalFlowDirection = [false, false, false, false];
@@ -294,41 +214,53 @@ class PopulatorLava extends Populator{
 		return $isOptimalFlowDirection;
 	}
 
-	/**
-	 * @param int $x1
-	 * @param int $y1
-	 * @param int $z1
-	 * @param int $x2
-	 * @param int $y2
-	 * @param int $z2
-	 * @param int $decay
-	 * @return int
-	 */
-	private function getSmallestFlowDecay(int $x1, int $y1, int $z1, int $x2, int $y2, int $z2, int $decay) : int{
-		$blockDecay = $this->getFlowDecay($x1, $y1, $z1, $x2, $y2, $z2);
-		if($blockDecay < 0){
-			return $decay;
-		}else{
-			if($blockDecay >= 8){
-				$blockDecay = 0;
+	private function calculateFlowCost(int $xx, int $yy, int $zz, int $accumulatedCost, int $previousDirection) : int{
+		$cost = 1000;
+		for($j = 0; $j < 4; ++$j){
+			if(
+				($j == 0 && $previousDirection == 1) ||
+				($j == 1 && $previousDirection == 0) ||
+				($j == 2 && $previousDirection == 3) ||
+				($j == 3 && $previousDirection == 2)
+			){
+				$x = $xx;
+				$y = $yy;
+				$z = $zz;
+				if($j == 0){
+					--$x;
+				}else{
+					if($j == 1){
+						++$x;
+					}else{
+						if($j == 2){
+							--$z;
+						}else{
+							if($j == 3){
+								++$z;
+							}
+						}
+					}
+				}
+				if(!$this->canFlowInto($x, $y, $z)){
+					continue;
+				}else{
+					if($this->canFlowInto($x, $y, $z) && $this->level->getBlockDataAt($x, $y, $z) == 0){
+						continue;
+					}else{
+						if($this->canFlowInto($x, $y - 1, $z)){
+							return $accumulatedCost;
+						}
+					}
+				}
+				if($accumulatedCost >= 4){
+					continue;
+				}
+				$realCost = $this->calculateFlowCost($x, $y, $z, $accumulatedCost + 1, $j);
+				if($realCost < $cost){
+					$cost = $realCost;
+				}
 			}
 		}
-		return ($decay >= 0 && $blockDecay >= $decay) ? $decay : $blockDecay;
-	}
-
-	/**
-	 * @param Chunk $chunk
-	 * @param int   $x
-	 * @param int   $z
-	 * @return int
-	 */
-	private function getHighestWorkableBlock(Chunk $chunk, int $x, int $z) : int{
-		for($y = 127; $y >= 0; $y--){
-			$b = $chunk->getBlockId($x, $y, $z);
-			if($b == Block::AIR){
-				break;
-			}
-		}
-		return $y == 0 ? -1 : $y;
+		return $cost;
 	}
 }

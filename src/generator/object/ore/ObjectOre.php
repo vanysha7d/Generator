@@ -11,49 +11,27 @@ use pocketmine\utils\Random;
 
 class ObjectOre{
 
-	/** @var Random */
-	private $random;
 	/** @var OreType */
 	public $type;
+	/** @var Random */
+	private $random;
 	/** @var int */
 	private $replaceId;
 
-	/**
-	 * ObjectOre constructor.
-	 * @param Random  $random
-	 * @param OreType $type
-	 * @param int     $replaceId
-	 */
 	public function __construct(Random $random, OreType $type, int $replaceId = Block::STONE){
 		$this->type = $type;
 		$this->random = $random;
 		$this->replaceId = $replaceId;
 	}
 
-	/**
-	 * @return OreType
-	 */
 	public function getType() : OreType{
 		return $this->type;
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @return bool
-	 */
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z) : bool{
 		return ($level->getBlockIdAt($x, $y, $z) == $this->replaceId);
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 */
 	public function placeObject(ChunkManager $level, int $x, int $y, int $z) : void{
 		$clusterSize = $this->type->clusterSize;
 		$angle = $this->random->nextFloat() * M_PI;

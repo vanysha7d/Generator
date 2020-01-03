@@ -12,61 +12,6 @@ use pocketmine\utils\Random;
 
 abstract class ObjectTree{
 
-	/**
-	 * @param int $id
-	 * @return bool
-	 */
-	private function overridable(int $id) : bool{
-		switch($id){
-			case Block::AIR:
-			case Block::SAPLING:
-			case Block::LOG:
-			case Block::LEAVES:
-			case Block::SNOW_LAYER:
-			case Block::LOG2:
-			case Block::LEAVES2:
-				return true;
-			default:
-				return false;
-		}
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getType() : int{
-		return 0;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTrunkBlock() : int{
-		return Block::LOG;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getLeafBlock() : int{
-		return Block::LEAVES;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTreeHeight() : int{
-		return 7;
-	}
-
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @param Random       $random
-	 * @param int          $type
-	 */
 	public static function growTree(ChunkManager $level, int $x, int $y, int $z, Random $random, int $type = 0) : void{
 		switch($type){
 			case Sapling::SPRUCE:
@@ -92,18 +37,11 @@ abstract class ObjectTree{
 				break;
 		}
 
-		if($tree->canPlaceObject($level, $x, $y, $z, $random)){
+		if($tree->canPlaceObject($level, $x, $y, $z)){
 			$tree->placeObject($level, $x, $y, $z, $random);
 		}
 	}
 
-	/**
-	 * @param ChunkManager $level
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
-	 * @return bool
-	 */
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z) : bool{
 		$radiusToCheck = 0;
 		for($yy = 0; $yy < $this->getTreeHeight() + 3; ++$yy){
@@ -120,6 +58,25 @@ abstract class ObjectTree{
 		}
 
 		return true;
+	}
+
+	public function getTreeHeight() : int{
+		return 7;
+	}
+
+	private function overridable(int $id) : bool{
+		switch($id){
+			case Block::AIR:
+			case Block::SAPLING:
+			case Block::LOG:
+			case Block::LEAVES:
+			case Block::SNOW_LAYER:
+			case Block::LOG2:
+			case Block::LEAVES2:
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	/**
@@ -168,5 +125,17 @@ abstract class ObjectTree{
 				$level->setBlockDataAt($x, $y + $yy, $z, $this->getType());
 			}
 		}
+	}
+
+	public function getTrunkBlock() : int{
+		return Block::LOG;
+	}
+
+	public function getType() : int{
+		return 0;
+	}
+
+	public function getLeafBlock() : int{
+		return Block::LEAVES;
 	}
 }

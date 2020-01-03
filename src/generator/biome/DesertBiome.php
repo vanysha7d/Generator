@@ -6,9 +6,6 @@ namespace generator\biome;
 
 class DesertBiome extends SandyBiome{
 
-	/**
-	 * DesertBiome constructor.
-	 */
 	public function __construct(){
 		parent::__construct();
 
@@ -18,9 +15,6 @@ class DesertBiome extends SandyBiome{
 		$this->rainfall = 0;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName() : string{
 		return "Desert";
 	}
